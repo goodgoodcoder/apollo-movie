@@ -4,8 +4,8 @@ import styled from "styled-components";
 import { gql, useMutation } from "@apollo/client";
 
 const LIKE_MOVIE = gql`
-  mutation likeMovie($id: Int!) {
-    likeMovie(id: $id) @client
+  mutation toggleLikeMovie($id: Int!, $isLiked: Boolean!) {
+    toggleLikeMovie(id: $id, isLiked: $isLiked) @client
   }
 `;
 
@@ -38,15 +38,15 @@ const btnStyle = {
 };
 
 export default ({ id, bg, isLiked }) => {
-  const [likeMovie] = useMutation(LIKE_MOVIE, {
-    variables: { id: parseInt(id) },
+  const [toggleMovie] = useMutation(LIKE_MOVIE, {
+    variables: { id: parseInt(id), isLiked },
   });
   return (
     <Container>
       <Link to={`/${id}`}>
         <Poster bg={bg} />
       </Link>
-      <button style={btnStyle} onClick={isLiked ? null : likeMovie}>
+      <button style={btnStyle} onClick={toggleMovie}>
         {isLiked ? "Unlike" : "Like"}
       </button>
     </Container>
